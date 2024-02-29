@@ -1,0 +1,83 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn
+
+PATH: 
+  /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  14.21.3
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: https://registry.npmjs.org/axios: ETIMEDOUT
+      at Timeout._onTimeout (/usr/local/lib/node_modules/yarn/lib/cli.js:141550:19)
+      at listOnTimeout (internal/timers.js:557:17)
+      at processTimers (internal/timers.js:500:7)
+
+npm manifest: 
+  {
+    "name": "radar",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+      "start": "npm run serve",
+      "serve": "vue-cli-service serve",
+      "build": "vue-cli-service build",
+      "lint": "vue-cli-service lint"
+    },
+    "dependencies": {
+      "axios": "^1.3.4",
+      "core-js": "^3.8.3",
+      "crypto-js": "^4.2.0",
+      "echarts": "^5.4.3",
+      "element-ui": "^2.15.14",
+      "express": "^4.18.2",
+      "file-saver": "^2.0.5",
+      "qs": "^6.11.2",
+      "vue": "^2.6.14",
+      "vue-router": "^3.5.1",
+      "vuex": "^3.6.2"
+    },
+    "devDependencies": {
+      "@babel/core": "^7.12.16",
+      "@babel/eslint-parser": "^7.12.16",
+      "@vue/cli-plugin-babel": "~5.0.0",
+      "@vue/cli-plugin-eslint": "~5.0.0",
+      "@vue/cli-service": "~5.0.0",
+      "eslint": "^7.32.0",
+      "eslint-plugin-vue": "^8.0.3",
+      "node-sass": "^4.14.1",
+      "sass": "^1.69.7",
+      "sass-loader": "^8.0.2"
+    },
+    "eslintConfig": {
+      "root": true,
+      "env": {
+        "node": true
+      },
+      "extends": [
+        "plugin:vue/essential",
+        "eslint:recommended"
+      ],
+      "parserOptions": {
+        "parser": "@babel/eslint-parser"
+      },
+      "rules": {}
+    },
+    "browserslist": [
+      "> 1%",
+      "last 2 versions",
+      "not dead"
+    ]
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
