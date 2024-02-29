@@ -28,9 +28,9 @@
             </el-dropdown>
           </div>
         </div>
-        <el-container style="flex: 1; transition: all 1s;">
+        <el-container style="flex: 1;">
           <!-- 侧导航 -->
-            <el-menu default-active="2" class="mars-menu-vertical" :style="`display:${menuData.length ? 'block' : 'none'} ;`" @open="handleOpen" @close="handleClose" :collapse="isCollapse" :collapse-transition="false">
+            <el-menu default-active="2" class="mars-menu-vertical" :style="`display:${menuData.length ? 'block' : 'none'} ;`" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
               <!-- <el-submenu index="1">
                 <template slot="title">
                   <i class="el-icon-location"></i>
@@ -146,13 +146,12 @@ import menu from '@/router/menu'
     padding-left: 20px;
   }
   .mars-menu-vertical{
-
     text-align: left;
-    
-    .el-menu-item{
-      width: 200px;
-    }
-    
+    // transition: all 0.3s;
+  }
+  .mars-menu-vertical:not(.el-menu--collapse) {
+    width: 220px;
+    min-height: 400px;
   }
 }
 
