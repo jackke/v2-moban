@@ -2,6 +2,22 @@ import axios from "axios";
 import store from "@/store";
 import ElementUI from 'element-ui';
 import router from "@/router";
+
+// 路由守卫拦截
+router.beforeEach((to,from,next)=>{
+  let token = sessionStorage.getItem("token");
+  if(!token){
+      if(to.path!=='/login'){
+          next({path:"/login"})
+      }else{
+          next()
+      }
+  }else{
+      next()
+  }
+})
+
+
 // 创建axios实例
 const server = axios.create({
   //baseURL:dict.API_URL,
