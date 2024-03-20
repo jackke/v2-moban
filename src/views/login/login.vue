@@ -8,11 +8,11 @@
                 <span class="title">账户登录</span>
             </div>
             <el-form ref="form" :model="form" :rules="rules">
-                <el-form-item  prop="username" >
-                    <el-input  v-model="form.username" placeholder="请输入账户"></el-input>
+                <el-form-item  prop="username" style="box-sizing: border-box;">
+                    <el-input v-model="form.account" placeholder="请输入账户"><i slot="prefix" style="font-size: x-large;color: #303133;" class="el-input__icon el-icon-user"></i></el-input>
                 </el-form-item>
                 <el-form-item  prop="password" style="margin-top: 40px;">
-                    <el-input placeholder="请输入密码" v-model="form.password" show-password></el-input>
+                    <el-input  placeholder="请输入密码" v-model="form.password" show-password><i slot="prefix" style="font-size: x-large;color: #303133;" class="el-input__icon el-icon-lock"></i></el-input>
                 </el-form-item>
                 <el-form-item class="login-button">
                     <el-button type="primary" @click="onSubmit">登 录</el-button>
@@ -32,13 +32,13 @@ import qs from "qs";
       data() {
         return {
             form:{
-                username: '13123456789',
+                account: 'zhangke',
                 password: '123456'
             },
             rules: {
-                username: [
+                account: [
                     { required: true, message: '请输入账号', trigger: 'blur' },
-                    { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+                    { min: 2, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
                 ],
                 password: [
                     { required: true, message: '请输入密码', trigger: 'blur' },
@@ -54,24 +54,24 @@ import qs from "qs";
             this.$refs['form'].validate((valid) => {
                 if (valid) {
                     let data = {
-                        username: this.form.username,
-                        password: (CryptoJS.MD5(this.form.password).toString()).toUpperCase()
+                        username: this.form.account,
+                        password: this.form.password,
+                        token: null,
+                        // password: (CryptoJS.MD5(this.form.password).toString()).toUpperCase()
                     }
-                    sessionStorage.setItem('token', '123')
-                    this.$router.replace({path:'/index'})
-                    // login(data).then(res => {
-                    // this.$http.post(`${this.$api.server}/auth/login`, qs.stringify(data)).then(res => {
-                    //     if (res.code == 0){
-                    //         this.$store.commit('setToken', res.data.token)
-                    //         this.$store.commit('setUser', {id: '', username: res.data.username})
-                    //         this.$router.replace({path:'/index'})
-                    //         // console.log(this.$store.state, '$store');
-                    //     } else {
-                    //         this.$message.error(res.data.msg)
-                    //     }
-                    // }).catch((error) => {
-                    //     this.$message.error(error)
-                    // })
+                    this.$http.post(`${this.$api.api}/user/login`, data).then(res => {
+                        // console.log(res);
+                        if (res.code == 200){
+                            this.$store.commit('setUser', {...res.data})
+                            this.$store.commit('setToken', res.data.token)
+                            this.$router.push('/index')
+                            // console.log(this.$store.state, '$store');
+                        } else {
+                            this.$message.error(res.message)
+                        }
+                    }).catch((error) => {
+                        this.$message.error(error)
+                    })
                 } else {
                     console.log('error submit!!');
                     return false;
@@ -91,15 +91,15 @@ import qs from "qs";
     
 }
 :deep .el-input__inner {
-    height: 60px;
-    font-size: 24px;
+    height: 50px;
+    font-size: 16px;
 }
 .title{
     display: inline-block;
     padding: 10px 0;
-    font-size: 30px;
+    font-size: 26px;
     margin-top: 40px;
-    /* border-bottom: 3px solid #409EFF; */
+    border-bottom: 3px solid #409EFF;
     margin-bottom: 40px;
 }
 .form-login{
@@ -110,16 +110,20 @@ import qs from "qs";
     background: rgba(255,255,255,1);
     position: fixed;
     top: 23%;
-    left: 54%;
+    left: 54.5%
+}
+.form-login /deep/ .el-input--prefix .el-input__inner {
+    padding-left: 36px;
 }
 .login-button{
-    height: 60px;
+    height: 50px;
+    line-height: 50px;
     margin-top: 40px;
     border-radius: 40px;
     overflow: hidden;
 }
 .el-form-item__content > button{
-    height: 60px;
+    height: 50px;
     width: 100%;
     font-size: 20px;
 }
