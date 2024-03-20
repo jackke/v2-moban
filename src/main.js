@@ -5,17 +5,12 @@ import ElementUI from "element-ui";
 import router from "./router";
 import store from "./store";
 import * as echarts from 'echarts';
-// import animated from 'animate.css';
-// import "./style/element-variables.scss"
+
 
 
 Vue.prototype.$echarts = echarts;
-// Vue.use(ElementUI, {
-//   locale: { el: {...zhLang.el, ...locale.el}}
-// });
-Vue.use(ElementUI);
 
-// Vue.use(animated);
+Vue.use(ElementUI);
 
 Vue.config.productionTip = false;
 

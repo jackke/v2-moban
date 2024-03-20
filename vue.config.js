@@ -34,7 +34,7 @@ module.exports = defineConfig({
     config.resolve.alias
       .set('@', resolve('src'));
     config.plugin('html').tap(args => {
-      args[0].title = '火星'; //网站标题
+      args[0].title = '天腾'; //网站标题
       return args;
     });
   },

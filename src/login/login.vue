@@ -1,8 +1,5 @@
 <template>
     <div class="login-box">
-        <!-- <div class="main">
-            <div class="stars"></div>
-        </div> -->
         <div class="form-login">
             <div>
                 <span class="title">账户登录</span>
@@ -59,19 +56,19 @@ import qs from "qs";
                         token: null,
                         // password: (CryptoJS.MD5(this.form.password).toString()).toUpperCase()
                     }
-                    this.$http.post(`${this.$api.api}/user/login`, data).then(res => {
-                        // console.log(res);
-                        if (res.code == 200){
-                            this.$store.commit('setUser', {...res.data})
-                            this.$store.commit('setToken', res.data.token)
-                            this.$router.push('/index')
-                            // console.log(this.$store.state, '$store');
-                        } else {
-                            this.$message.error(res.message)
-                        }
-                    }).catch((error) => {
-                        this.$message.error(error)
-                    })
+                    sessionStorage.setItem("token", 'value');
+                    this.$router.push('/index')
+                    // this.$http.post(`${this.$api.api}/user/login`, data).then(res => {
+                    //     if (res.code == 200){
+                    //         this.$store.commit('setUser', {...res.data})
+                    //         this.$store.commit('setToken', res.data.token)
+                    //         this.$router.push('/index')
+                    //     } else {
+                    //         this.$message.error(res.message)
+                    //     }
+                    // }).catch((error) => {
+                    //     this.$message.error(error)
+                    // })
                 } else {
                     console.log('error submit!!');
                     return false;
@@ -110,7 +107,8 @@ import qs from "qs";
     background: rgba(255,255,255,1);
     position: fixed;
     top: 23%;
-    left: 54.5%
+    left: 54.5%;
+    text-align: left;
 }
 .form-login /deep/ .el-input--prefix .el-input__inner {
     padding-left: 36px;
