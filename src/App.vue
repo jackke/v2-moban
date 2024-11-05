@@ -35,7 +35,10 @@ export default {
 <style lang="scss">
   #app {
     --font-smoothing: grayscale;
-    text-align: center;
     height: 100vh;
+    // background-color: #F2F6FC;
+    box-sizing: border-box;
+    background-image: url(../public/image/bg.png);
+    background-size: 100% 100%;
   }
 </style>

@@ -6,15 +6,16 @@ import router from "@/router";
 // 路由守卫拦截
 router.beforeEach((to,from,next)=>{
   let token = sessionStorage.getItem("token");
-  if(!token){
-      if(to.path!=='/login'){
-          next({path:"/login"})
-      }else{
-          next()
-      }
-  }else{
-      next()
-  }
+  next()
+  // if(!token){
+  //     if(to.path!=='/login'){
+  //         next({path:"/login"})
+  //     }else{
+  //         next()
+  //     }
+  // }else{
+  //     next()
+  // }
 })
 
 
@@ -64,20 +65,20 @@ server.interceptors.response.use(
       console.log("与服务器连接失败，错误码", response.status);
       return response;
     }
-    if (response.data.code == 1015) {
-      store.commit('DelToken');
-      ElementUI.Message({
-        message: "token无效或已过期，请重新登录",
-        type: 'warning'
-      });
-      // 清除本地缓存
-      sessionStorage.clear()
-      setTimeout(function () {
-        router.replace({
-          path: '/login',
-        });
-      }, 1000);
-    }
+    // if (response.data.code == 1015) {
+    //   store.commit('DelToken');
+    //   ElementUI.Message({
+    //     message: "token无效或已过期，请重新登录",
+    //     type: 'warning'
+    //   });
+    //   // 清除本地缓存
+    //   sessionStorage.clear()
+    //   setTimeout(function () {
+    //     router.replace({
+    //       path: '/login',
+    //     });
+    //   }, 1000);
+    // }
     return response;
   },
   function (error) {

@@ -5,8 +5,11 @@ const webpack = require('webpack');
 function resolve (dir) {
   return path.join(__dirname, dir);
 }
+const MODE = process.env.VUE_APP_MODE;
+// console.log(MODE, '当前环境');
+
 module.exports = defineConfig({
-  publicPath: './',
+  publicPath: MODE === 'development' ? '/' : './',
   devServer: {
     host: "localhost",
     port: 8081, // 端口号
@@ -15,17 +18,11 @@ module.exports = defineConfig({
     open: false, //配置自动启动浏览器
     proxy: {
       '/api' : {
-        target: 'http://192.168.1.99:8202',
+        target: 'http://192.168.1.55:8888',
         pathRewrite: { '^/api': '' },
         changeOrigin: true, // target 是域名的话，需要这个参数
         secure: false // 设置支持https协议的代理
       },
-      '/server' : {
-        target: 'http://192.168.1.195/api',
-        pathRewrite: { '^/server': '' },
-        changeOrigin: true, // target 是域名的话，需要这个参数
-        secure: false // 设置支持https协议的代理
-      }
     }
   },
   transpileDependencies: true,
@@ -33,10 +30,10 @@ module.exports = defineConfig({
   chainWebpack: config => {
     config.resolve.alias
       .set('@', resolve('src'));
-    config.plugin('html').tap(args => {
-      args[0].title = '天腾'; //网站标题
-      return args;
-    });
+      config.plugin('html').tap(args => {
+        args[0].title = '值班管理'; //网站标题
+        return args;
+      });
   },
   configureWebpack: {
     output: {
