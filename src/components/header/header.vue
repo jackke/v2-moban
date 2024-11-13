@@ -1,16 +1,15 @@
 <template>
     <div class="header-box">
-        <div class="nav nav-left">
-            <!-- 值班系统 -->
-             <div @click="navRouter('dutyManage', 0)" :class="routerName == 'dutyManage' ? 'active' : ''">值班管理</div>
-             <div @click="navRouter('dutyInfo', 1)" :class="routerName == 'dutyInfo' ? 'active' : ''">值班信息</div>
-        </div>
         <div class="title">
             值班系统
         </div>
+        <div class="menu-list flex">
+             <div @click="navRouter('dutyManage')">值班列表</div>
+             <div @click="navRouter('dutyInfo')">值班信息</div>
+             <div @click="navRouter('userDuty')">我的值班</div>
+             <div @click="navRouter('userManage')">人员管理</div>
+        </div>
         <div  class="nav nav-right">
-            <div @click="navRouter('userDuty', 2)" :class="routerName == 'userDuty' ? 'active' : ''">我的值班</div>
-            <div @click="navRouter('userManage', 3)" :class="routerName == 'userManage' ? 'active' : ''">人员管理</div>
             <!-- <el-dropdown trigger="click">
                 <span class="el-dropdown-link">
                     {{ userName }} <i class="el-icon-caret-bottom"></i>
@@ -52,58 +51,77 @@
 </script>
 <style lang="scss" scoped>
 .header-box{
+    color: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 100%;
-    // background-color: #fff;
+    background-color: #409EFF;
     padding: 0 20px;
-    background-image: url(../../../public/image/head-bg.png);
-    background-size: 100% 120%;
+
+    // background-image: url(../../../public/image/head-bg.png);
+    // background-size: 100% 120%;
     // border-bottom: 1px solid #E5E7EB;
-    >div{
-        flex: 1;
-        text-align: center;
-    }
-   .title{
-        font-size: 2rem;
-        font-weight: 500;
-        color: #fff;
-        background: linear-gradient(0deg, rgba(5,63,152,0.5) 0%, #FFFFFF 20%, #FFFFFF 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    .nav{
+
+
+
+   .menu-list{
         color: #fff;
         display: flex;
-        font-size: 15px;
-        margin-top: 30px;
+        // font-size: 15px;
+        // margin-top: 30px;
         >div{
             cursor: pointer;
-            background-image: url(../../../public/image/nav-bg.png);
-            background-size: 100% 100%;
-            padding:5px 20px;
-            border-radius: 5px;
-        }
-        >div.active{
-            background-image: url(../../../public/image/nav-action.png);
-            background-size: 100% 130%;
-        }
-    }
-    .nav-left{
-        justify-content: flex-end;
-        margin-right: 100px;
-        >div{
-            margin-right: 20px;
-        }
-    }
-    .nav-right{
-        justify-content: flex-start;
-        margin-left: 100px;
-        >div{
             margin-left: 20px;
+            // background-image: url(../../../public/image/nav-bg.png);
+            // background-size: 100% 100%;
         }
     }
+
+
+//     >div{
+//         flex: 1;
+//         text-align: center;
+//     }
+//    .title{
+//         font-size: 2rem;
+//         font-weight: 500;
+//         color: #fff;
+//         background: linear-gradient(0deg, rgba(5,63,152,0.5) 0%, #FFFFFF 20%, #FFFFFF 100%);
+//         -webkit-background-clip: text;
+//         -webkit-text-fill-color: transparent;
+//     }
+//     .nav{
+//         color: #fff;
+//         display: flex;
+//         font-size: 15px;
+//         margin-top: 30px;
+//         >div{
+//             cursor: pointer;
+//             background-image: url(../../../public/image/nav-bg.png);
+//             background-size: 100% 100%;
+//             padding:5px 20px;
+//             border-radius: 5px;
+//         }
+//         >div.active{
+//             background-image: url(../../../public/image/nav-action.png);
+//             background-size: 100% 130%;
+//         }
+//     }
+//     .nav-left{
+//         justify-content: flex-end;
+//         margin-right: 100px;
+//         >div{
+//             margin-right: 20px;
+//         }
+//     }
+//     .nav-right{
+//         justify-content: flex-start;
+//         margin-left: 100px;
+//         >div{
+//             margin-left: 20px;
+//         }
+//     }
 }
 
 </style>

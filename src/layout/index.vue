@@ -1,7 +1,7 @@
 <template>
     <div class="home-box app-main">
         <el-container>
-          <el-header style="box-shadow: 0 2px 12px 0 rgba(0,0,0,.1); height: 5rem;">
+          <el-header style="box-shadow: 0 2px 12px 0 rgba(0,0,0,.1); height: 4rem;">
               <headMenu></headMenu>
           </el-header>
           <el-main>

@@ -16,8 +16,8 @@
                                 <div v-if="item.odate == data.day" :key="index">
                                     <el-button size="mini" class="share-button" @click="noticeApplyClick(item)" icon="el-icon-edit-outline" type="success" circle></el-button>
                                     <el-button size="mini" class="share-button" @click="noticeClick(item)" icon="el-icon-s-check" type="warning" circle></el-button>
-                                    <!-- <el-button size="mini" v-if="item.applyfor == 2"  class="share-button" @click="noticeApplyClick(item)" icon="el-icon-edit-outline" type="success" circle></el-button> -->
-                                    <!-- <el-button size="mini" v-if="item.examine == 2"  class="share-button" @click="noticeClick(item)" icon="el-icon-s-check" type="warning" circle></el-button> -->
+                                    <!-- <el-button size="mini" v-if="item.applyfor == 2"  class="share-button" @click="noticeApplyClick(item)" icon="el-icon-edit-outline" type="success" circle></el-button>
+                                    <el-button size="mini" v-if="item.examine == 2"  class="share-button" @click="noticeClick(item)" icon="el-icon-s-check" type="warning" circle></el-button> -->
                                     <el-button type="text" style="margin-left: 20px;" @click.stop="shiftClick(item)">调班</el-button>
                                 </div>
                             </template>
@@ -218,7 +218,7 @@ import moment from'moment'
                 timefor: "10: 00",
                 content: '',
                 state: 1,
-                userid: sessionStorage.getItem('userid') || '',
+                number: sessionStorage.getItem('number') || '',
             },
             deptList:[
             {
@@ -275,6 +275,18 @@ import moment from'moment'
                     content: '产品设计会议',
                     state: 1,
                 },
+                {
+                    odate: '2024-11-05',
+                    timefor: '10:00',
+                    content: '产品设计会议',
+                    state: 1,
+                },
+                {
+                    odate: '2024-11-05',
+                    timefor: '10:00',
+                    content: '产品设计会议',
+                    state: 1,
+                },
             ],
             noticeList: [],
             total: 0,
@@ -308,7 +320,7 @@ import moment from'moment'
         initData(odatestar = '', odateend = ''){
             let params = {
                 name: sessionStorage.getItem('username') || '',
-                userid: sessionStorage.getItem('userid') || '',
+                number: sessionStorage.getItem('number') || '',
                 roleid: sessionStorage.getItem('roleid') || '',
                 odatestar,
                 odateend,
@@ -327,7 +339,7 @@ import moment from'moment'
         // 日程列表
         initList(date){
             let params = {
-                userid: sessionStorage.getItem('userid') || '',
+                number: sessionStorage.getItem('number') || '',
                 dateforstar: moment(date).format('YYYY-MM-DD'),
                 dateforend: moment(date).format('YYYY-MM-DD'),
             }
@@ -362,7 +374,7 @@ import moment from'moment'
                     timefor: "10: 00",
                     content: '',
                     state: 1,
-                    userid: sessionStorage.getItem('userid') || '',
+                    number: sessionStorage.getItem('number') || '',
                 }
                 this.$refs.dialogForm.resetFields()
             })
@@ -379,7 +391,7 @@ import moment from'moment'
             this.dialogVisibleShiftList = true
             // let data = this.tableData.find(item => item.odate == day)
             this.shiftForm.applybeonid = item.id
-            this.shiftForm.applyid = sessionStorage.getItem('userid') || ''
+            this.shiftForm.applyid = sessionStorage.getItem('number') || ''
             this.shiftForm.applyname = sessionStorage.getItem('username') || ''
             this.shiftForm.odate = item.odate
             this.shiftForm.state = 1
@@ -473,7 +485,7 @@ import moment from'moment'
         },
         shiftParamsClick(item){
             this.dialogVisibleShiftInfo = true
-            this.shiftForm.papplyid = item.userid
+            this.shiftForm.papplyid = item.number
             this.shiftForm.papplyname = item.name
             this.shiftForm.papplybeonid = item.id
             this.pappInfo = {...item}
@@ -512,7 +524,6 @@ import moment from'moment'
         display: flex;
         flex-direction: column;
         background-color: rgba(#f2f8fe, 0);
-        color: #fff;
     }
     .list-box{
         height: 500px;
@@ -521,7 +532,6 @@ import moment from'moment'
     .list{
         background-color: var(--border-color);
         // background-color: rgb(97, 124, 235);
-        color: #fff;
         border-radius: 10px;
         margin: 10px 0;
         padding: 20px;
