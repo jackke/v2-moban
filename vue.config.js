@@ -18,7 +18,7 @@ module.exports = defineConfig({
     open: false, //配置自动启动浏览器
     proxy: {
       '/api' : {
-        target: 'http://192.168.1.55:8888',
+        target: 'http://192.168.1.250:8888',
         pathRewrite: { '^/api': '' },
         changeOrigin: true, // target 是域名的话，需要这个参数
         secure: false // 设置支持https协议的代理

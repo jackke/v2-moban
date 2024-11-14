@@ -7,40 +7,49 @@
                     slot-scope="{date, data}">
                     <div :class="data.isSelected ? 'is-selected' : ''"  @click.self="calenderChange(date, data)">
                         <!-- {{ data.day.split('-').slice(1).join('-') }} {{ data.isSelected ? '✔️' : ''}} -->
-                          <div>
-                                {{ dataDayListFn(data) }} 
+                          <div class="flex" style="justify-content: space-between; align-items: center;">
+                                <div>{{ dataDayListFn(data) }} 日</div>
+                                <el-button type="text" style="margin-left: 20px;" @click.stop="shiftClick(item)">调班</el-button>
                           </div>
                           <!-- <div v-if="noticeStatus(data.day)" > -->
-                        <div style="height: 40px; overflow: auto;">
-                            <template v-for="(item, index) in tableData">
-                                <div v-if="item.odate == data.day" :key="index">
+                        <div style="height: 40px; overflow: auto;" class="dayTotal">
+                            <!-- <template v-for="(item, index) in tableData"> -->
+                                <!-- <div v-if="item.odate == data.day" :key="index">
                                     <el-button size="mini" class="share-button" @click="noticeApplyClick(item)" icon="el-icon-edit-outline" type="success" circle></el-button>
                                     <el-button size="mini" class="share-button" @click="noticeClick(item)" icon="el-icon-s-check" type="warning" circle></el-button>
-                                    <!-- <el-button size="mini" v-if="item.applyfor == 2"  class="share-button" @click="noticeApplyClick(item)" icon="el-icon-edit-outline" type="success" circle></el-button>
-                                    <el-button size="mini" v-if="item.examine == 2"  class="share-button" @click="noticeClick(item)" icon="el-icon-s-check" type="warning" circle></el-button> -->
-                                    <el-button type="text" style="margin-left: 20px;" @click.stop="shiftClick(item)">调班</el-button>
-                                </div>
-                            </template>
+                                    <el-button size="mini" v-if="item.applyfor == 2"  class="share-button" @click="noticeApplyClick(item)" icon="el-icon-edit-outline" type="success" circle></el-button>
+                                    <el-button size="mini" v-if="item.examine == 2"  class="share-button" @click="noticeClick(item)" icon="el-icon-s-check" type="warning" circle></el-button>
+                                   
+                                </div> -->
+                            <!-- </template> -->
+                            <div v-if="dataDayParams[data.day] && dataDayParams[data.day].examine !== 0" class="flex" style="justify-content: space-between;"> <span>本人提交</span> <span>{{ examine }} 条</span> </div>
+                             <div v-if="dataDayParams[data.day] && dataDayParams[data.day].applyfor !== 0" class="flex" style="justify-content: space-between;"> <span>待审批</span> <span>{{ applyfor }} 条</span></div>
+                            <!-- <div  class="flex" style="justify-content: space-between;"> <span>本人提交</span> <span>{{ examine }} 条</span> </div>
+                             <div  class="flex" style="justify-content: space-between;"> <span>待审批</span> <span>{{ applyfor }} 条</span></div> -->
                         </div>
                     </div> 
                 </template>
             </el-calendar>
         </div>
         <div class="content-right">
-            <div class="flex flex-c">
-                <el-button style="flex: 1" type="primary" @click="addList"> 添加日程 </el-button>
-                <div class="flex" style="justify-content: space-between; padding: 20px 0;">
-                    <span>日程列表</span>
-                    <span>{{ moment(dateDay).format('YYYY-MM-DD')  }}</span>
-                </div>
+            <div class="flex title">
+                <div class="title-span">日程列表</div>
+                <el-button type="primary" @click="addList" icon="el-icon-circle-plus"> 添加日程 </el-button>
             </div>
             <div class="flex flex-c list-box">
-                <div class="list" v-for="(item,index) in listData" :key="index">
-                    <div class="title">
-                        <span><i :type="['', 'primary', 'warning', 'danger'][item.state]"></i>{{ item.title }}</span>
-                        <el-tag :type="['', 'primary', 'warning', 'danger'][item.state]">{{ item.timefor}}</el-tag>
+                <div class="list flex" v-for="(item,index) in listData" :key="index">
+                    <div class="status">
+                        <!-- <span><i :type="['', 'primary', 'warning', 'danger'][item.state]"></i>{{ item.title }}</span>
+                        <el-tag :type="['', 'primary', 'warning', 'danger'][item.state]">{{ item.timefor}}</el-tag> -->
+                        <el-tag :type="['', 'primary', 'warning', 'danger'][item.state]"><i class="el-icon-s-custom"></i></el-tag>
                     </div>
-                    <div class="content"> {{ item.content }} </div>
+                    <div class="content">
+                        <div class="flex" style="justify-content: space-between;">
+                            <div class="title">{{ item.title }}</div>
+                            <div>会议时间 <span :type="['', 'primary', 'warning', 'danger'][item.state]">{{ item.timefor }}</span></div>
+                        </div>
+                        <div style="margin-top: 10px;"> {{ item.content }} </div>
+                    </div>
                     <el-button size="mini" type="danger" class="delete-list" @click="deleteList(item)">删除</el-button>
                 </div>
             </div>
@@ -205,6 +214,8 @@ import moment from'moment'
       data() {
         return {
             dateDay: new Date(),
+            odatestar: '',
+            odateend: '',
             moment,
             dialogVisible: false,
             dialogVisibleShiftList: false,
@@ -241,9 +252,8 @@ import moment from'moment'
                 pageSize: 10
             },
             pappInfo:{},
-            shiftForm: {
-
-            },
+            shiftForm: {},
+            dataDayParams: {},
             listData:[
                 {
                     title: '会议中心',
@@ -269,24 +279,24 @@ import moment from'moment'
             ],
             shiftList: [],
             tableData: [
-                {
-                    odate: '2024-11-05',
-                    timefor: '10:00',
-                    content: '产品设计会议',
-                    state: 1,
-                },
-                {
-                    odate: '2024-11-05',
-                    timefor: '10:00',
-                    content: '产品设计会议',
-                    state: 1,
-                },
-                {
-                    odate: '2024-11-05',
-                    timefor: '10:00',
-                    content: '产品设计会议',
-                    state: 1,
-                },
+                // {
+                //     odate: '2024-11-05',
+                //     timefor: '10:00',
+                //     content: '产品设计会议',
+                //     state: 1,
+                // },
+                // {
+                //     odate: '2024-11-05',
+                //     timefor: '10:00',
+                //     content: '产品设计会议',
+                //     state: 1,
+                // },
+                // {
+                //     odate: '2024-11-05',
+                //     timefor: '10:00',
+                //     content: '产品设计会议',
+                //     state: 1,
+                // },
             ],
             noticeList: [],
             total: 0,
@@ -318,6 +328,8 @@ import moment from'moment'
             return this.tableData.some(item => item.odate == day)
         },
         initData(odatestar = '', odateend = ''){
+            this.odatestar = odatestar;
+            this.odateend = odateend;
             let params = {
                 name: sessionStorage.getItem('username') || '',
                 number: sessionStorage.getItem('number') || '',
@@ -332,6 +344,26 @@ import moment from'moment'
             this.$http.post('/beon/list', params).then(res => {
                 if (res.code == 200){
                     this.tableData = res.data;
+                    console.log(this.dataDayList);
+                    this.dataDayList.forEach(item => {
+                        let applyfor = 0
+                        let examine = 0
+                        this.tableData.forEach(el => {
+                            if (el.odate == item){
+                                if (el.applyfor == 2) applyfor++
+                                if (el.examine == 2) examine++
+                                this.dataDayParams[item] = {
+                                    applyfor,
+                                    examine
+                                }
+                            }
+                        })
+                    })
+                    console.log(this.dataDayParams);
+                    
+                    // this.tableDataodate = {
+                    //     [moment(date).format('YYYY-MM-DD')]: this.tableData
+                    // }
                     // this.total = res.data.total;
                 }
             })
@@ -411,39 +443,39 @@ import moment from'moment'
             this.$nextTick(() => {
                 if (!this.dataDayList.includes(data.day))  this.dataDayList.push(data.day)
             })
-            return data.day.split('-').slice(1).join('-') 
+            return parseInt(data.day.split('-')[2])
         },
         // 审核记录
         noticeClick(row){
             this.noticeType = 'examine'
             this.dialogVisibleNotice = true
             this.noticeList = []
-            // this.$http.post(`/beon/examine/log?id=${row.id}`).then(res => {
-            //     if (res.code == 200){
-            //         this.dialogVisibleNotice = true
-            //         this.noticeList = res.data || []
-            //         // this.pappInfo = res.data
-            //     }
-            // })
+            this.$http.post(`/beon/examine/log?id=${row.id}`).then(res => {
+                if (res.code == 200){
+                    this.dialogVisibleNotice = true
+                    this.noticeList = res.data || []
+                    // this.pappInfo = res.data
+                }
+            })
         },
         // 申请记录
         noticeApplyClick(row){
             this.noticeType = 'apply'
             this.dialogVisibleNotice = true
             this.noticeList = []
-            // this.$http.post(`/beon/apply/log?id=${row.id}`).then(res => {
-            //     if (res.code == 200){
-            //         this.dialogVisibleNotice = true
-            //         this.noticeList = res.data || []
-            //         // this.pappInfo = res.data
-            //     }
-            // })
+            this.$http.post(`/beon/apply/log?id=${row.id}`).then(res => {
+                if (res.code == 200){
+                    this.dialogVisibleNotice = true
+                    this.noticeList = res.data || []
+                    // this.pappInfo = res.data
+                }
+            })
         },
         consentClick(row, state){
             this.$http.post('/beon/judge', {id: row.id, state: 2}).then(res => {
                 if (res.code == 200){
                     this.handleClose()
-                    this.initData()
+                    this.initData(odatestar, odateend, this.dataDayList)
                 } else {
                     this.$notify.error({  title: '操作失败', });
                 }
@@ -512,65 +544,106 @@ import moment from'moment'
 .user-duty{
     width: 100%;
     // background-color: #fff;
-    padding: 20px;
+    // padding: 20px;
     box-sizing: border-box;
     .content-left{
         width: 65%;
-        padding: 0 20px;
+        padding: 0 20px 0 0;
+        .el-calendar{
+            border-radius: 12px;
+            overflow: hidden;
+        }
     }
     .content-right{
         flex: 1;
-        padding: 20px;
         display: flex;
         flex-direction: column;
-        background-color: rgba(#f2f8fe, 0);
+        background-color: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        .title{
+            padding: 20px 40px;
+            justify-content: space-between;
+            .el-button--primary{
+                background: #F48D1F;
+                border-radius: 6px;
+                border-color: #F48D1F;
+            }
+        }
+        .title-span{
+            font-family: Microsoft YaHei;
+            font-weight: bold;
+            font-size: 24px;
+            color: #1D2129;
+        }
+        
     }
     .list-box{
+        border-top: 1px solid #EEEEEE;
         height: 500px;
         overflow-y: auto;
     }
     .list{
-        background-color: var(--border-color);
-        // background-color: rgb(97, 124, 235);
-        border-radius: 10px;
-        margin: 10px 0;
-        padding: 20px;
+        border-bottom: 1px solid #EEEEEE;
+        padding: 19px 40px;
         position: relative;
         &:hover{
            .delete-list{
                 display: block;
             }
         }
+        .status{
+            .el-tag{
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+        .status i{
+            font-size: 20px;
+        }
         .title{
             display: flex;
             justify-content: space-between;
             // color: #333;
-            i{
-                display: inline-block;
-                width: 15px;
-                height: 15px;
-                background-color: #409eff;
-                border-radius: 50%;
-                margin-right: 10px;
-            }
-            i[type="primary"]{
-                background-color: #409eff;
-            }
-            i[type="warning"]{
-                background-color: #e6a23c;
-            }
-            i[type="danger"]{
-                background-color: #f56c6c;
-            }
         }
         .date{
             font-size: 16px;
             // color: #606266;
         }
         .content{
-            width: 70%;
-            margin-top: 20px;
+            flex: 1;
             font-size: 14px;
+            margin-left: 10px;
+            .title{
+                font-family: Microsoft YaHei;
+                font-weight: 600;
+                font-size: 18px;
+                color: #1D2129;
+                padding: 0;
+            }
+            >div:nth-child(2){
+                font-family: Microsoft YaHei;
+                line-height: 28px;
+                font-weight: 400;
+                font-size: 14px;
+                color: #86909C;
+            }
+            span{
+                font-weight: 400;
+                color: #409eff;
+            }
+            span[type="primary"]{
+                color: #409eff;
+            }
+            span[type="warning"]{
+                color: #e6a23c;
+            }
+            span[type="danger"]{
+                color: #f56c6c;
+            }
             // color: #606266;
         }
         .delete-list{
@@ -578,6 +651,23 @@ import moment from'moment'
             position: absolute;
             right: 20px;
             bottom: 20px;
+        }
+    }
+    .dayTotal{
+        div{
+            font-weight: 400;
+            font-size: 10px;
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+        >div:nth-child(1){
+            background-color: #FEDF85;
+            color: #A28E52;
+            margin-bottom: 2px;
+        }
+        >div:nth-child(2){
+            background-color: #ABEFEA;
+            color: #6B9895;
         }
     }
    
@@ -617,9 +707,6 @@ import moment from'moment'
     i[type="danger"]{
         background-color: #f56c6c;
     }
-    .el-radio{
-        color: #fff;
-    }
     .info-title{
         display: flex;
         flex-wrap: wrap;
@@ -629,7 +716,6 @@ import moment from'moment'
                 font-size: 16px;
                 padding:0 10px;
                 font-weight: 400;
-                color: #fff;
                 display: flex;
                 align-items: center;
         }

@@ -1,7 +1,7 @@
 <template>
     <div class="home-box app-main">
         <el-container>
-          <el-header style="box-shadow: 0 2px 12px 0 rgba(0,0,0,.1); height: 4rem;">
+          <el-header style="box-shadow: 0 2px 12px 0 rgba(0,0,0,.1); height: 64px;">
               <headMenu></headMenu>
           </el-header>
           <el-main>
@@ -77,7 +77,6 @@ import headMenu from '@/components/header/header.vue'
 }
 /deep/ .el-header{
   padding: 0;
-  margin-bottom: 20px;
 }
 /deep/ .el-main{
   height: calc(100vh - 8rem);
