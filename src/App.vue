@@ -36,9 +36,9 @@ export default {
   #app {
     --font-smoothing: grayscale;
     height: 100vh;
-    // background-color: #F2F6FC;
+    background-color: #F2F6FC;
     box-sizing: border-box;
-    background-image: url(../public/image/bg.png);
-    background-size: 100% 100%;
+    // background-image: url(../public/image/bg.png);
+    // background-size: 100% 100%;
   }
 </style>

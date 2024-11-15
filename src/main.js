@@ -11,6 +11,7 @@ import "./styles/main.scss"
 import "./styles/el-main.scss"
 
 
+
 Vue.prototype.$echarts = echarts;
 
 Vue.use(ElementUI);

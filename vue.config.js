@@ -11,7 +11,7 @@ const MODE = process.env.VUE_APP_MODE;
 module.exports = defineConfig({
   publicPath: MODE === 'development' ? '/' : './',
   devServer: {
-    host: "localhost",
+    // host: "localhost",
     port: 8081, // 端口号
     host: '0.0.0.0',
     https: false, // https:{type:Boolean}
@@ -31,7 +31,7 @@ module.exports = defineConfig({
     config.resolve.alias
       .set('@', resolve('src'));
       config.plugin('html').tap(args => {
-        args[0].title = '值班管理'; //网站标题
+        args[0].title = '智能网格预报'; //网站标题
         return args;
       });
   },

@@ -7,27 +7,9 @@
 .flex-c{
     flex-direction: column;
 }
+.flex-sb{
+   justify-content: space-between;
+}
 div{
     box-sizing: border-box;
-}
-
-.notice-button{
-    display: flex;
-    justify-content: flex-end;
-    padding-top: 20px;
-    width: 100%;
-    >div{
-        padding: 5px 10px;
-        border: 1px solid #f56c6c;
-        border-radius: 5px;
-        margin-left: 10px;
-        cursor: pointer;
-        background-color: #f56c6c;
-        color: #fff;
-    }
-    >div:nth-child(2){
-        background-color: #409EFF;
-        border-color: #409EFF;
-    }
-
 }

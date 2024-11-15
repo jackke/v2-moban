@@ -16,11 +16,11 @@ let routes = [
   {
     path: "/index",
     name: 'layout',
-    redirect: '/dutyInfo',
+    redirect: '/productManage',
     meta: {
       name: "首页",
     },
-    component: () => import("@/layout/index"),
+    component: () => import("@/components/layout/index"),
     // children
     children: [
       ...routers
