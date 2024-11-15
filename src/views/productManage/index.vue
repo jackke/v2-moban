@@ -150,6 +150,7 @@
                           action="#"
                           list-type="picture-card"
                           :show-file-list="false"
+                          v-model="dataParams.imgUrl"
                           :on-change="handlePictureCardPreview"
                           :on-remove="handleRemove"
                           >
@@ -165,8 +166,21 @@
                             v-model="dataParams.warnContent">
                         </el-input>
                     </el-form-item>
-               
                 </el-form>
+                <div class="flex flex-sb img-list">
+                    <div @click="squareUrlClick(squareUrl)">
+                        <el-avatar shape="square" :size="100" :src="squareUrl"></el-avatar>
+                    </div>
+                    <div  @click="squareUrlClick(squareUrl1)">
+                        <el-avatar shape="square" :size="100" :src="squareUrl1"></el-avatar>
+                    </div>
+                    <div  @click="squareUrlClick(squareUrl2)">
+                        <el-avatar shape="square" :size="100" :src="squareUrl2"></el-avatar>
+                    </div>
+                    <div  @click="squareUrlClick(squareUrl3)">
+                        <el-avatar shape="square" :size="100" :src="squareUrl3"></el-avatar>
+                    </div>
+                </div>
             </div>
        </div>
   </div>  
@@ -175,6 +189,7 @@
 <script>
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import beijing from "@/assets/images/beijing.jpg"
   export default {
     name: 'productManage',
     data() {
@@ -182,6 +197,10 @@ import 'leaflet/dist/leaflet.css';
         dialogImageUrl: '',
         dialogVisible: false,
         loadingStatus: false,
+        squareUrl:  require('@/assets/images/beijing.jpg'),
+        squareUrl1:  require('@/assets/images/shanghai.jpg'),
+        squareUrl2:  require('@/assets/images/xining.jpg'),
+        squareUrl3:  require('@/assets/images/nanjing.jpg'),
         form:{
 
         },
@@ -195,6 +214,7 @@ import 'leaflet/dist/leaflet.css';
             "proPath": "",
             "sendTime": "",
             "title": "",
+            imgUrl: '',
             "warnContent": ""
         },
         map: null,
@@ -265,32 +285,51 @@ import 'leaflet/dist/leaflet.css';
           })    
       },
       handleRemove(file, fileList) {
-        console.log(file, fileList);
+          console.log(file, fileList);
       },
       handlePictureCardPreview(file) {
           this.dialogImageUrl = file.url;
-          let url = URL.createObjectURL(file.raw);
-          this.dialogImageUrl = url;
-
+          // console.log(file);
+          // let url = URL.createObjectURL(file.raw);
+          // this.dialogImageUrl = url;
           let data = new FormData();
-          // data.append('file', file.raw);
+          data.append('file', file.raw);
           this.$http.post('/product/upload', data).then(res => {
-            if (res.code == 200){
-              this.dataParams.imgUrl = res.data;
-              // this.dialogImageUrl = res.data;
-            } else {
-              this.$notify.error({  title: '上传失败', });
-            }
+              if (res.code == 200){
+                  this.dataParams.imgUrl = res.data;
+                  // this.dialogImageUrl = res.data;
+              } else {
+                  this.$notify.error({  title: '上传失败', });
+              }
           })
       },
       downloadFile(){
           let link = document.createElement('a');
           link.href = this.dialogImageUrl;
-          link.download = '1.png';
+          link.download = '1.pdf';
           // link.setAttribute(res.data.fileName, res.data.proPath);
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
+      },
+      squareUrlClick(url){
+          this.dialogImageUrl = url;
+          fetch(url).then(arrayBuffer => {
+              const blob = new Blob([arrayBuffer]);
+              const file = new File([blob], 'example.txt', { type: 'text/plain' });
+              // console.log(file);
+              let data = new FormData();
+              data.append('file', file);
+              this.$http.post('/product/upload', data).then(res => {
+                if (res.code == 200){
+                  this.dataParams.imgUrl = res.data;
+                  // this.dialogImageUrl = res.data;
+                } else {
+                  this.$notify.error({  title: '上传失败', });
+                }
+              })
+          })
+        
       }
     }
 }
@@ -347,6 +386,13 @@ import 'leaflet/dist/leaflet.css';
       width: 600px;
       padding: 20px;
       background-color: #fff;
+    }
+    .img-list{
+      >div{
+        border: 1px solid #409EFF;
+        border-radius: 10px;
+        overflow: hidden;
+      }
     }
   }
 

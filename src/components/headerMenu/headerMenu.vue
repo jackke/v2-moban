@@ -1,7 +1,7 @@
 <template>
     <div class="header-box">
         <div class="title">
-            智能网格管理系统
+            值班管理系统
         </div>
         <div class="menu-list flex">
              <div @click="navRouter('productManage')" :class="activeIndex == 'productManage' ? 'active' : ''">产品制作</div>
